@@ -2,12 +2,13 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useHistory } from 'react-router';
 import * as S from './listaDespesa-styled';
 
+// Resgata as informações do localstorage
 const getListLocalStorage = () => {
     return JSON.parse(localStorage.getItem('listaDespesas'))
 }
 
+// Atualiza as informações do localstorage
 const setListLocalStorage = (list) => {
-    console.log(list)
     localStorage.setItem('listaDespesas', JSON.stringify(list))
     window.location.reload();
 }
@@ -16,37 +17,30 @@ export default function ListaDespesas() {
     const [listDespesas, setListDespesas] = useState(null);
     const history = useHistory();
 
+    // ComponentDidMount - Para inserir no state os dados do localStorage
     useEffect(() => {
-        console.log('1', getListLocalStorage())
         setListDespesas(getListLocalStorage())
-        console.log('2', listDespesas)
-        console.log('Está carregando', getListLocalStorage())
     }, [])
 
-    // useEffect(() => {
-    //     setListDespesas(getListLocalStorage())
-    //     console.log('Está carregando', getListLocalStorage())
-    // }, [listDespesas])
-
+    // Função que deleta a despesa
     function handleDelete(index, month) {
-        console.log('State Antes de excluir', listDespesas)
-        console.log('LocalStorage antes de excluir', getListLocalStorage())
         setListDespesas(listDespesas.map(item => {
             if (item.month == month) {
                 // Removendo item do array
                 item.items.splice(index, 1);
             }
         }))
+        // Atualizando o state
         setListLocalStorage(listDespesas)
-        console.log('Salvou localStorage', getListLocalStorage())
-        console.log('Salvou state', listDespesas)
     }
 
+    // Salva a lista e volta para a página inicial
     function handleToPage() {
         setListDespesas(getListLocalStorage())
         history.push('/');
     }
 
+    // Retorna o conteúdo do state
     function retornarConteudo() {
         if (listDespesas) {
             return (

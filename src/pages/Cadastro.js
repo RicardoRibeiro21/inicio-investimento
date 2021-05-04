@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ListaDespesas from './ListaDespesas';
 import * as S from './cadastro-styled';
 
+// Lista dos meses com os items vazios 
 let meses = [{ month: 'Abril', items: [] },
 { month: 'Maio', items: [] },
 { month: 'Junho', items: [] },
@@ -12,20 +13,25 @@ let meses = [{ month: 'Abril', items: [] },
 { month: 'Setembro', items: [] }]
 
 export default function Home() {
+    // State das propriedades do objeto Despesa
     const [descricaoDespesa, setDescricaoDespesa] = useState(String);
     const [valorDespesa, setValorDescricao] = useState();
     const [mesDespesa, setMesDespesa] = useState();
     const history = useHistory();
 
 
+    // Função que captura os dados e insere na lista
     function handleInputChange() {
+        // Gerando Id_random
         let idObjeto = Math.random().toString().replace('0.', '').valueOf()
+        // Resgatando as informações do objeto
         const objeto = {
             id: idObjeto,
             description: descricaoDespesa,
             price: valorDespesa
         }
 
+        // Encontrando o mês selecionado e inserindo a despesa
         meses.map(item => {
             if (item.month == mesDespesa)
                 item.items.push(objeto)
@@ -34,6 +40,7 @@ export default function Home() {
 
     }
 
+    // Salva no localStorage e redireciona para a lista de despesas
     function handleToPage() {
         localStorage.setItem('listaDespesas', JSON.stringify(meses));
         history.push('/lista-despesas');
